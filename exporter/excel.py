@@ -15,6 +15,10 @@ class ExcelExporter:
             "Title",
             "Emails",
             "Phones",
+            "LinkedIn",
+            "Facebook",
+            "Instagram",
+            "Twitter",
             "Contact Pages"
         ])
 
@@ -25,6 +29,7 @@ class ExcelExporter:
         title,
         emails,
         phones,
+        social,
         contacts
     ):
 
@@ -34,6 +39,10 @@ class ExcelExporter:
             title,
             ", ".join(emails),
             ", ".join(phones),
+            social["linkedin"],
+            social["facebook"],
+            social["instagram"],
+            social["twitter"],
             ", ".join(contacts)
         ])
 

@@ -5,6 +5,7 @@ from scraper.company import CompanyExtractor
 from scraper.email import EmailExtractor
 from scraper.phone import PhoneExtractor
 from scraper.contact import ContactFinder
+from scraper.social import SocialExtractor
 from exporter.excel import ExcelExporter
 
 
@@ -25,9 +26,7 @@ class Scanner:
 
             website = row["website"]
 
-            print("\n" + "=" * 60)
-            print(f"[{index+1}/{total}] {website}")
-            print("=" * 60)
+            print(f"\n[{index+1}/{total}] {website}")
 
             try:
 
@@ -47,6 +46,8 @@ class Scanner:
                     website,
                     html
                 )
+
+                social = SocialExtractor.extract(html)
 
                 for contact in contacts:
 
@@ -76,6 +77,7 @@ class Scanner:
                     title,
                     emails,
                     phones,
+                    social,
                     contacts
                 )
 
