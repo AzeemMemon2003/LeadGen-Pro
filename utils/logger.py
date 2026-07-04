@@ -1,29 +1,45 @@
+import logging
+import os
 from datetime import datetime
 
 
 class Logger:
 
-    FILE = "logs/leadgen.log"
+    _logger = None
 
-    @staticmethod
-    def info(message):
+    @classmethod
+    def get_logger(cls):
 
-        Logger.write("INFO", message)
+        if cls._logger:
+            return cls._logger
 
-    @staticmethod
-    def error(message):
+        os.makedirs("logs", exist_ok=True)
 
-        Logger.write("ERROR", message)
+        filename = datetime.now().strftime("%Y-%m-%d_%H-%M-%S.log")
 
-    @staticmethod
-    def write(level, message):
+        logfile = os.path.join("logs", filename)
 
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        logger = logging.getLogger("LeadGenPro")
 
-        line = f"[{now}] [{level}] {message}\n"
+        logger.setLevel(logging.INFO)
 
-        print(line.strip())
+        formatter = logging.Formatter(
+            "%(asctime)s | %(levelname)s | %(message)s"
+        )
 
-        with open(Logger.FILE, "a", encoding="utf-8") as file:
+        # File
+        file_handler = logging.FileHandler(logfile)
 
-            file.write(line)
+        file_handler.setFormatter(formatter)
+
+        # Console
+        console_handler = logging.StreamHandler()
+
+        console_handler.setFormatter(formatter)
+
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+
+        cls._logger = logger
+
+        return logger

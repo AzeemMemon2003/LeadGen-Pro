@@ -8,9 +8,11 @@ from scraper.address import AddressExtractor
 from scraper.crawler import SmartCrawler
 from scraper.tech import TechExtractor
 from scraper.seo import SEOExtractor
+from scraper.scoring import LeadScorer
 
 from exporter.excel import ExcelExporter
 from search.manager import SearchManager
+from utils.logger import Logger
 
 
 class Scanner:
@@ -37,6 +39,9 @@ class Scanner:
         browser = Browser()
         browser.start()
 
+        logger = Logger.get_logger()
+        logger.info("LeadGen Pro Started")
+
         excel = ExcelExporter()
 
         total = len(websites)
@@ -46,6 +51,8 @@ class Scanner:
             print("\n" + "=" * 60)
             print(f"[{index + 1}/{total}] {website}")
             print("=" * 60)
+
+            logger.info(f"Scanning: {website}")
 
             try:
 
@@ -94,12 +101,22 @@ class Scanner:
                             AddressExtractor.extract(crawl_html)
                         )
 
-                    except Exception:
-                        pass
+                    except Exception as e:
+
+                        logger.error(f"Crawl Failed: {url} | {e}")
 
                 emails = sorted(set(emails))
                 phones = sorted(set(phones))
                 addresses = sorted(set(addresses))
+
+                score = LeadScorer.score(
+                    emails,
+                    phones,
+                    addresses,
+                    technology,
+                    seo,
+                    crawl_pages
+                )
 
                 social = {
                     "linkedin": "",
@@ -120,6 +137,10 @@ class Scanner:
                     crawl_pages
                 )
 
+                logger.info(
+                    f"{company} | Emails: {len(emails)} | Phones: {len(phones)} | Score: {score['score']}"
+                )
+
                 print(f"🏢 Company : {company}")
                 print(f"📧 Emails  : {len(emails)}")
                 print(f"📞 Phones  : {len(phones)}")
@@ -127,19 +148,32 @@ class Scanner:
                 print(f"💻 Tech    : {', '.join(technology)}")
 
                 print("\n📊 SEO Audit")
-
                 print(f"Title             : {'✅' if seo['title'] else '❌'}")
                 print(f"Meta Description  : {'✅' if seo['meta_description'] else '❌'}")
                 print(f"H1                : {'✅' if seo['h1'] else '❌'}")
                 print(f"Images without ALT: {seo['images_without_alt']}")
 
+                print("\n⭐ Lead Score")
+                print(f"Score: {score['score']}/100")
+
+                if score["opportunities"]:
+
+                    print("Opportunities:")
+
+                    for item in score["opportunities"]:
+                        print(f" - {item}")
+
             except Exception as e:
+
+                logger.error(f"{website} | {e}")
 
                 print(f"❌ {e}")
 
         browser.stop()
 
         excel.save()
+
+        logger.info("Scan Finished")
 
         print("\n" + "=" * 60)
         print("✅ Scan Finished")

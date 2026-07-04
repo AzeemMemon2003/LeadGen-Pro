@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+import config
 
 
 class Browser:
@@ -7,6 +8,7 @@ class Browser:
 
         self.playwright = None
         self.browser = None
+        self.context = None
         self.page = None
 
     def start(self):
@@ -14,18 +16,19 @@ class Browser:
         self.playwright = sync_playwright().start()
 
         self.browser = self.playwright.chromium.launch(
-            headless=False
+            headless=config.HEADLESS
         )
 
-        # Create ONLY ONE tab
-        self.page = self.browser.new_page()
+        self.context = self.browser.new_context()
+
+        self.page = self.context.new_page()
 
     def open(self, url):
 
         self.page.goto(
             url,
             wait_until="domcontentloaded",
-            timeout=60000
+            timeout=config.TIMEOUT
         )
 
         return self.page

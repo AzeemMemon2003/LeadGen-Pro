@@ -1,0 +1,8 @@
+2026-07-05 02:21:14,110 | INFO | LeadGen Pro Started
+2026-07-05 02:21:14,119 | INFO | Scanning: https://openai.com
+2026-07-05 02:21:17,655 | INFO | OpenAI | Emails: 0 | Phones: 9 | Score: 70
+2026-07-05 02:21:17,655 | INFO | Scanning: https://python.org
+2026-07-05 02:21:20,325 | INFO | Python.org | Emails: 3 | Phones: 0 | Score: 75
+2026-07-05 02:21:20,325 | INFO | Scanning: https://www.cloudflare.com
+2026-07-05 02:21:29,379 | INFO | Cloudflare | Emails: 4 | Phones: 64 | Score: 90
+2026-07-05 02:21:29,544 | INFO | Scan Finished
