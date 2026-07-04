@@ -4,8 +4,10 @@ from scraper.browser import Browser
 from scraper.company import CompanyExtractor
 from scraper.email import EmailExtractor
 from scraper.phone import PhoneExtractor
-from scraper.crawler import SmartCrawler
 from scraper.address import AddressExtractor
+from scraper.crawler import SmartCrawler
+from scraper.tech import TechExtractor
+
 from exporter.excel import ExcelExporter
 
 
@@ -32,7 +34,6 @@ class Scanner:
 
             try:
 
-                # Homepage
                 page = browser.open(website)
 
                 html = page.content()
@@ -47,7 +48,8 @@ class Scanner:
 
                 addresses = AddressExtractor.extract(html)
 
-                # Crawl important pages
+                technology = TechExtractor.extract(html)
+
                 crawl_pages = SmartCrawler.extract(
                     website,
                     html
@@ -78,7 +80,6 @@ class Scanner:
                     except Exception:
                         pass
 
-                # Remove duplicates
                 emails = sorted(set(emails))
                 phones = sorted(set(phones))
                 addresses = sorted(set(addresses))
@@ -97,18 +98,20 @@ class Scanner:
                     emails,
                     phones,
                     addresses,
+                    technology,
                     social,
                     crawl_pages
                 )
 
-                print(f"🏢 Company  : {company}")
+                print(f"🏢 Company : {company}")
                 print(f"📧 Emails  : {len(emails)}")
                 print(f"📞 Phones  : {len(phones)}")
                 print(f"📍 Address : {len(addresses)}")
+                print(f"💻 Tech    : {', '.join(technology)}")
 
             except Exception as e:
 
-                print(f"❌ Error: {e}")
+                print(f"❌ {e}")
 
         browser.stop()
 
