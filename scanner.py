@@ -4,8 +4,7 @@ from scraper.browser import Browser
 from scraper.company import CompanyExtractor
 from scraper.email import EmailExtractor
 from scraper.phone import PhoneExtractor
-from scraper.contact import ContactFinder
-from scraper.social import SocialExtractor
+from scraper.crawler import SmartCrawler
 from exporter.excel import ExcelExporter
 
 
@@ -26,7 +25,9 @@ class Scanner:
 
             website = row["website"]
 
-            print(f"\n[{index+1}/{total}] {website}")
+            print("\n" + "=" * 60)
+            print(f"[{index+1}/{total}] {website}")
+            print("=" * 60)
 
             try:
 
@@ -42,30 +43,31 @@ class Scanner:
 
                 phones = PhoneExtractor.extract(html)
 
-                contacts = ContactFinder.extract(
+                crawl_pages = SmartCrawler.extract(
                     website,
                     html
                 )
 
-                social = SocialExtractor.extract(html)
+                print(f"🔎 Crawling {len(crawl_pages)} pages...")
 
-                for contact in contacts:
+                for url in crawl_pages:
 
                     try:
 
-                        contact_page = browser.open(contact)
+                        crawl_page = browser.open(url)
 
-                        contact_html = contact_page.content()
+                        crawl_html = crawl_page.content()
 
                         emails.extend(
-                            EmailExtractor.extract(contact_html)
+                            EmailExtractor.extract(crawl_html)
                         )
 
                         phones.extend(
-                            PhoneExtractor.extract(contact_html)
+                            PhoneExtractor.extract(crawl_html)
                         )
 
-                    except:
+                    except Exception:
+
                         pass
 
                 emails = sorted(set(emails))
@@ -77,20 +79,26 @@ class Scanner:
                     title,
                     emails,
                     phones,
-                    social,
-                    contacts
+                    {
+                        "linkedin": "",
+                        "facebook": "",
+                        "instagram": "",
+                        "twitter": ""
+                    },
+                    crawl_pages
                 )
 
                 print(f"🏢 {company}")
-                print(f"📧 {len(emails)} emails")
-                print(f"📞 {len(phones)} phones")
+                print(f"📧 {len(emails)} Emails")
+                print(f"📞 {len(phones)} Phones")
 
             except Exception as e:
 
-                print(e)
+                print("❌", e)
 
         browser.stop()
 
         excel.save()
 
         print("\n✅ Scan Finished")
+        print("📄 output/leads.xlsx")
