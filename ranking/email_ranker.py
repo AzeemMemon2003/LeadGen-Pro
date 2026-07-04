@@ -1,41 +1,34 @@
 class EmailRanker:
 
-    HIGH_PRIORITY = [
-        "owner",
-        "founder",
-        "ceo",
-        "director",
-        "marketing",
-        "sales",
-        "hello",
-        "contact",
-        "business"
-    ]
+    SCORES = {
+        "contact": 100,
+        "sales": 95,
+        "hello": 90,
+        "info": 85,
+        "support": 70,
+        "marketing": 65,
+        "admin": 40,
+        "office": 35,
+        "careers": 20,
+        "jobs": 20,
+        "legal": 10,
+        "privacy": 5,
+        "noreply": 0,
+        "no-reply": 0
+    }
 
-    MEDIUM_PRIORITY = [
-        "info",
-        "support",
-        "help"
-    ]
+    @classmethod
+    def score(cls, email):
 
-    LOW_PRIORITY = [
-        "admin",
-        "office",
-        "team"
-    ]
+        local = email.split("@")[0].lower()
 
-    IGNORE = [
-        "privacy",
-        "legal",
-        "abuse",
-        "security",
-        "noreply",
-        "no-reply",
-        "webmaster",
-        "hostmaster",
-        "postmaster",
-        "mailer-daemon"
-    ]
+        for key, value in cls.SCORES.items():
+
+            if key in local:
+
+                return value
+
+        return 50
 
     @classmethod
     def rank(cls, emails):
@@ -48,53 +41,28 @@ class EmailRanker:
                 "ignored": []
             }
 
-        primary = ""
-        backups = []
+        ranked = sorted(
+            emails,
+            key=lambda x: cls.score(x),
+            reverse=True
+        )
+
         ignored = []
 
-        ranked = []
+        cleaned = []
 
-        for email in emails:
+        for email in ranked:
 
-            email = email.lower().strip()
-
-            username = email.split("@")[0]
-
-            if any(word in username for word in cls.IGNORE):
+            if cls.score(email) == 0:
 
                 ignored.append(email)
 
-                continue
-
-            score = 0
-
-            if any(word in username for word in cls.HIGH_PRIORITY):
-                score += 100
-
-            elif any(word in username for word in cls.MEDIUM_PRIORITY):
-                score += 70
-
-            elif any(word in username for word in cls.LOW_PRIORITY):
-                score += 40
-
             else:
-                score += 90
 
-            ranked.append((score, email))
-
-        ranked.sort(reverse=True)
-
-        if ranked:
-
-            primary = ranked[0][1]
-
-            backups = [email for _, email in ranked[1:]]
+                cleaned.append(email)
 
         return {
-
-            "primary": primary,
-
-            "backup": backups,
-
+            "primary": cleaned[0] if cleaned else "",
+            "backup": cleaned[1:],
             "ignored": ignored
         }
