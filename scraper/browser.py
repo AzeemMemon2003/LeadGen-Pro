@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+import time
 import config
 
 
@@ -25,13 +26,29 @@ class Browser:
 
     def open(self, url):
 
-        self.page.goto(
-            url,
-            wait_until="domcontentloaded",
-            timeout=config.TIMEOUT
-        )
+        retries = 3
 
-        return self.page
+        for attempt in range(retries):
+
+            try:
+
+                self.page.goto(
+                    url,
+                    wait_until="domcontentloaded",
+                    timeout=config.TIMEOUT
+                )
+
+                return self.page
+
+            except Exception:
+
+                print(
+                    f"Retry {attempt + 1}/{retries} -> {url}"
+                )
+
+                time.sleep(2)
+
+        raise Exception(f"Failed to open {url}")
 
     def stop(self):
 
