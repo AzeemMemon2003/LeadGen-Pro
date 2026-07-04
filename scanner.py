@@ -9,24 +9,42 @@ from scraper.crawler import SmartCrawler
 from scraper.tech import TechExtractor
 
 from exporter.excel import ExcelExporter
+from search.manager import SearchManager
 
 
 class Scanner:
 
     def run(self):
 
+        print("\nSelect Input Mode")
+        print("1. CSV File")
+        print("2. Keyword Search")
+
+        choice = input("\nChoice (1/2): ").strip()
+
+        manager = SearchManager()
+
+        if choice == "2":
+
+            websites = manager.by_keyword()
+
+        else:
+
+            websites = manager.from_csv()
+
+        if not websites:
+
+            print("No websites found.")
+            return
+
         browser = Browser()
         browser.start()
 
         excel = ExcelExporter()
 
-        df = pd.read_csv("input/websites.csv")
+        total = len(websites)
 
-        total = len(df)
-
-        for index, row in df.iterrows():
-
-            website = row["website"]
+        for index, website in enumerate(websites):
 
             print("\n" + "=" * 60)
             print(f"[{index + 1}/{total}] {website}")
