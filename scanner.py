@@ -19,27 +19,21 @@ class Scanner:
 
     def run(self):
 
-        print("\nSelect Input Mode")
-        print("1. CSV File")
-        print("2. Keyword Search")
-
-        choice = input("\nChoice (1/2): ").strip()
-
         manager = SearchManager()
 
-        if choice == "2":
-            websites = manager.by_keyword()
-        else:
-            websites = manager.from_csv()
+        websites = manager.menu()
 
         if not websites:
-            print("No websites found.")
+
+            print("\nNo websites found.")
+
             return
 
         browser = Browser()
         browser.start()
 
         logger = Logger.get_logger()
+
         logger.info("LeadGen Pro Started")
 
         excel = ExcelExporter()
@@ -109,6 +103,13 @@ class Scanner:
                 phones = sorted(set(phones))
                 addresses = sorted(set(addresses))
 
+                social = {
+                    "linkedin": "",
+                    "facebook": "",
+                    "instagram": "",
+                    "twitter": ""
+                }
+
                 score = LeadScorer.score(
                     emails,
                     phones,
@@ -117,13 +118,6 @@ class Scanner:
                     seo,
                     crawl_pages
                 )
-
-                social = {
-                    "linkedin": "",
-                    "facebook": "",
-                    "instagram": "",
-                    "twitter": ""
-                }
 
                 excel.add(
                     company,
@@ -138,7 +132,7 @@ class Scanner:
                 )
 
                 logger.info(
-                    f"{company} | Emails: {len(emails)} | Phones: {len(phones)} | Score: {score['score']}"
+                    f"{company} | Emails:{len(emails)} | Phones:{len(phones)} | Score:{score['score']}"
                 )
 
                 print(f"🏢 Company : {company}")
@@ -154,14 +148,15 @@ class Scanner:
                 print(f"Images without ALT: {seo['images_without_alt']}")
 
                 print("\n⭐ Lead Score")
-                print(f"Score: {score['score']}/100")
+                print(f"Score : {score['score']}/100")
 
                 if score["opportunities"]:
 
-                    print("Opportunities:")
+                    print("\nOpportunities:")
 
                     for item in score["opportunities"]:
-                        print(f" - {item}")
+
+                        print(f"• {item}")
 
             except Exception as e:
 
