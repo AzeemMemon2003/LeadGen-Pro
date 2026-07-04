@@ -2,11 +2,16 @@ import pandas as pd
 
 from scraper.browser import Browser
 from scraper.email import EmailExtractor
+from scraper.phone import PhoneExtractor
 from scraper.contact import ContactFinder
 from exporter.excel import ExcelExporter
 
 
 def main():
+
+    print("=" * 60)
+    print("🚀 LeadGen Pro v1.1")
+    print("=" * 60)
 
     browser = Browser()
     browser.start()
@@ -15,11 +20,12 @@ def main():
 
     df = pd.read_csv("input/websites.csv")
 
-    for _, row in df.iterrows():
+    for index, row in df.iterrows():
 
         website = row["website"]
 
-        print(f"\nScanning {website}")
+        print(f"\nScanning ({index + 1}/{len(df)})")
+        print(website)
 
         try:
 
@@ -31,12 +37,14 @@ def main():
 
             emails = EmailExtractor.extract(html)
 
+            phones = PhoneExtractor.extract(html)
+
             contacts = ContactFinder.extract(
                 website,
                 html
             )
 
-            # Visit every contact page
+            # Visit contact pages
             for contact in contacts:
 
                 try:
@@ -45,35 +53,42 @@ def main():
 
                     contact_html = contact_page.content()
 
-                    new_emails = EmailExtractor.extract(contact_html)
+                    emails.extend(
+                        EmailExtractor.extract(contact_html)
+                    )
 
-                    emails.extend(new_emails)
+                    phones.extend(
+                        PhoneExtractor.extract(contact_html)
+                    )
 
-                except:
+                except Exception:
                     pass
 
             emails = sorted(set(emails))
+            phones = sorted(set(phones))
 
             excel.add(
                 website,
                 title,
                 emails,
+                phones,
                 contacts
             )
 
-            print("Emails:", len(emails))
-            print("Contact Pages:", len(contacts))
+            print(f"✅ {len(emails)} emails")
+            print(f"✅ {len(phones)} phones")
+            print(f"✅ {len(contacts)} contact pages")
 
         except Exception as e:
 
-            print(e)
+            print("❌", e)
 
     browser.stop()
 
     excel.save()
 
-    print("\n✅ Finished")
-    print("output/leads.xlsx")
+    print("\n🎉 Scan Complete")
+    print("📄 output/leads.xlsx")
 
 
 if __name__ == "__main__":
