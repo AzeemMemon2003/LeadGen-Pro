@@ -1,4 +1,4 @@
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 
 
 class SearchEngine:
@@ -16,7 +16,7 @@ class SearchEngine:
 
             for result in results:
 
-                url = result.get("href")
+                url = result.get("href") or result.get("url")
 
                 if not url:
                     continue

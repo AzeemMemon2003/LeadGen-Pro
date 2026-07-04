@@ -7,6 +7,7 @@ from scraper.phone import PhoneExtractor
 from scraper.address import AddressExtractor
 from scraper.crawler import SmartCrawler
 from scraper.tech import TechExtractor
+from scraper.seo import SEOExtractor
 
 from exporter.excel import ExcelExporter
 from search.manager import SearchManager
@@ -25,15 +26,11 @@ class Scanner:
         manager = SearchManager()
 
         if choice == "2":
-
             websites = manager.by_keyword()
-
         else:
-
             websites = manager.from_csv()
 
         if not websites:
-
             print("No websites found.")
             return
 
@@ -67,6 +64,8 @@ class Scanner:
                 addresses = AddressExtractor.extract(html)
 
                 technology = TechExtractor.extract(html)
+
+                seo = SEOExtractor.extract(html)
 
                 crawl_pages = SmartCrawler.extract(
                     website,
@@ -126,6 +125,13 @@ class Scanner:
                 print(f"📞 Phones  : {len(phones)}")
                 print(f"📍 Address : {len(addresses)}")
                 print(f"💻 Tech    : {', '.join(technology)}")
+
+                print("\n📊 SEO Audit")
+
+                print(f"Title             : {'✅' if seo['title'] else '❌'}")
+                print(f"Meta Description  : {'✅' if seo['meta_description'] else '❌'}")
+                print(f"H1                : {'✅' if seo['h1'] else '❌'}")
+                print(f"Images without ALT: {seo['images_without_alt']}")
 
             except Exception as e:
 
