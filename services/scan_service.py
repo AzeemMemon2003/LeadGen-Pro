@@ -8,6 +8,7 @@ from scraper.seo import SEOExtractor
 from services.crawl_service import CrawlService
 
 from intelligence.qualifier import LeadQualifier
+from ai.opportunity import OpportunityEngine
 
 
 class ScanService:
@@ -71,5 +72,7 @@ class ScanService:
         }
 
         result["qualification"] = LeadQualifier.qualify(result)
+
+        result["opportunity"] = OpportunityEngine.analyze(result)
 
         return result

@@ -30,3 +30,25 @@ class ReportService:
             for reason in qualification["reasons"]:
 
                 print(f"✔ {reason}")
+
+        opportunity = result["opportunity"]
+
+        print("\n💼 Sales Opportunity")
+        print(f"Priority : {opportunity['priority']}")
+        print(f"\nSummary : {opportunity['summary']}")
+
+        if opportunity["problems"]:
+
+            print("\nProblems:")
+
+            for problem in opportunity["problems"]:
+
+                print(f"• {problem}")
+
+        if opportunity["services"]:
+
+            print("\nRecommended Services:")
+
+            for service in opportunity["services"]:
+
+                print(f"✅ {service}")
