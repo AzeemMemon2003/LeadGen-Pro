@@ -4,6 +4,7 @@ from scraper.phone import PhoneExtractor
 from scraper.address import AddressExtractor
 from scraper.tech import TechExtractor
 from scraper.seo import SEOExtractor
+from intelligence.contact import ContactIntelligence
 
 from services.crawl_service import CrawlService
 
@@ -72,6 +73,8 @@ class ScanService:
         }
 
         result["qualification"] = LeadQualifier.qualify(result)
+
+        result["contact"] = ContactIntelligence.build(result)
 
         result["opportunity"] = OpportunityEngine.analyze(result)
 

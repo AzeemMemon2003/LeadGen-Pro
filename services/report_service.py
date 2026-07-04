@@ -4,10 +4,22 @@ class ReportService:
     def print(result):
 
         print(f"🏢 Company : {result['company']}")
-        print(f"📧 Emails  : {len(result['emails'])}")
-        print(f"📞 Phones  : {len(result['phones'])}")
-        print(f"📍 Address : {len(result['addresses'])}")
+        print(f"🌐 Website : {result['website']}")
         print(f"💻 Tech    : {', '.join(result['technology'])}")
+
+        contact = result.get("contact", {})
+
+        print("\n📇 Contact Intelligence")
+        print(f"Primary Email : {contact.get('primary_email', 'Not Found')}")
+        print(f"Primary Phone : {contact.get('primary_phone', 'Not Found')}")
+        print(f"Head Office   : {contact.get('head_office', 'Not Found')}")
+        print(f"Confidence    : {contact.get('confidence', 0)}%")
+
+        backup_emails = contact.get("backup_emails", [])
+        backup_phones = contact.get("backup_phones", [])
+
+        print(f"Backup Emails : {len(backup_emails)}")
+        print(f"Backup Phones : {len(backup_phones)}")
 
         seo = result["seo"]
 

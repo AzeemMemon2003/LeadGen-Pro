@@ -1,30 +1,63 @@
 import re
+from bs4 import BeautifulSoup
 
 
 class AddressExtractor:
 
+    STREET_TYPES = (
+        "street", "st",
+        "road", "rd",
+        "avenue", "ave",
+        "boulevard", "blvd",
+        "drive", "dr",
+        "lane", "ln",
+        "court", "ct",
+        "circle", "cir",
+        "parkway", "pkwy",
+        "way",
+        "place", "pl",
+        "suite", "ste"
+    )
+
     @staticmethod
     def extract(html):
 
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Remove junk
+        for tag in soup([
+            "script",
+            "style",
+            "noscript",
+            "svg"
+        ]):
+            tag.decompose()
+
+        text = soup.get_text(" ", strip=True)
+
         addresses = []
 
-        patterns = [
+        pattern = re.compile(
+            r"\d{1,6}\s+[^,]{2,80},\s*"
+            r"[^,]{2,40},\s*"
+            r"[A-Z]{2}\s+\d{5}",
+            re.IGNORECASE
+        )
 
-            # US style addresses
-            r"\d{1,6}\s+[A-Za-z0-9\s.,'-]+,\s*[A-Za-z\s]+,\s*[A-Z]{2}\s+\d{5}",
+        for match in pattern.findall(text):
 
-            # UK / General postal codes
-            r"\d{1,6}\s+[A-Za-z0-9\s.,'-]+,\s*[A-Za-z\s]+,\s*[A-Za-z0-9 ]{4,10}",
+            address = " ".join(match.split())
 
-        ]
+            lower = address.lower()
 
-        for pattern in patterns:
+            if not any(
+                street in lower
+                for street in AddressExtractor.STREET_TYPES
+            ):
+                continue
 
-            matches = re.findall(pattern, html)
+            if address not in addresses:
 
-            addresses.extend(matches)
-
-        # Remove duplicates
-        addresses = list(dict.fromkeys(addresses))
+                addresses.append(address)
 
         return addresses

@@ -1,3 +1,5 @@
+import json
+
 from bs4 import BeautifulSoup
 
 
@@ -8,45 +10,120 @@ class CompanyExtractor:
 
         soup = BeautifulSoup(html, "html.parser")
 
-        # 1. Open Graph Site Name (Best)
+        # -------------------------
+        # Open Graph
+        # -------------------------
+
         og = soup.find("meta", property="og:site_name")
+
         if og and og.get("content"):
+
             return og["content"].strip()
 
-        # 2. Application Name
-        app = soup.find("meta", attrs={"name": "application-name"})
+        # -------------------------
+        # JSON-LD Organization
+        # -------------------------
+
+        scripts = soup.find_all(
+            "script",
+            type="application/ld+json"
+        )
+
+        for script in scripts:
+
+            try:
+
+                data = json.loads(script.string)
+
+                if isinstance(data, list):
+
+                    for item in data:
+
+                        if isinstance(item, dict):
+
+                            if item.get("@type") in [
+                                "Organization",
+                                "LocalBusiness",
+                                "Corporation"
+                            ]:
+
+                                if item.get("name"):
+
+                                    return item["name"].strip()
+
+                elif isinstance(data, dict):
+
+                    if data.get("@type") in [
+                        "Organization",
+                        "LocalBusiness",
+                        "Corporation"
+                    ]:
+
+                        if data.get("name"):
+
+                            return data["name"].strip()
+
+            except Exception:
+
+                pass
+
+        # -------------------------
+        # Application Name
+        # -------------------------
+
+        app = soup.find(
+            "meta",
+            attrs={"name": "application-name"}
+        )
+
         if app and app.get("content"):
+
             return app["content"].strip()
 
-        # 3. Organization Schema
-        org = soup.find("meta", attrs={"property": "og:site_name"})
-        if org and org.get("content"):
-            return org["content"].strip()
+        # -------------------------
+        # Title
+        # -------------------------
 
-        # 4. Clean page title
-        title = page.title().strip()
+        title = page.title()
 
-        separators = [
+        for sep in [
+
             "|",
-            " - ",
-            " — ",
-            " • ",
+
+            "-",
+
+            "—",
+
+            "•",
+
             ":"
-        ]
 
-        for sep in separators:
+        ]:
+
             if sep in title:
-                title = title.split(sep)[0].strip()
 
-        # Remove common suffixes
-        remove_words = [
-            "Official Site",
-            "Official Website",
-            "Homepage",
-            "Home"
-        ]
+                title = title.split(sep)[0]
 
-        for word in remove_words:
-            title = title.replace(word, "").strip()
+        title = title.strip()
 
-        return title
+        if title:
+
+            return title
+
+        # -------------------------
+        # Domain fallback
+        # -------------------------
+
+        url = page.url
+
+        domain = (
+            url.replace("https://", "")
+               .replace("http://", "")
+               .split("/")[0]
+        )
+
+        if domain.startswith("www."):
+
+            domain = domain[4:]
+
+        return domain
