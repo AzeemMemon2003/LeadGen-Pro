@@ -26,7 +26,15 @@ CREATE TABLE IF NOT EXISTS leads (
 
     source TEXT,
 
-    created_at TEXT
+    contact_form TEXT,
+
+    whatsapp TEXT,
+
+    linkedin TEXT,
+
+    created_at TEXT,
+
+    updated_at TEXT
 
 )
 

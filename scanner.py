@@ -1,11 +1,12 @@
 from scraper.browser import Browser
 
 from exporter.excel import ExcelExporter
-
 from search.manager import SearchManager
 
 from services.scan_service import ScanService
 from services.report_service import ReportService
+
+from database.repository import LeadRepository
 
 from utils.logger import Logger
 
@@ -25,24 +26,23 @@ class Scanner:
             return
 
         browser = Browser()
-
         browser.start()
 
         logger = Logger.get_logger()
 
-        logger.info("LeadGen Pro Started")
+        repo = LeadRepository()
 
         excel = ExcelExporter()
 
         total = len(websites)
 
+        print(f"\n🚀 Starting scan of {total} websites...\n")
+
         for index, website in enumerate(websites):
 
-            print("\n" + "=" * 60)
+            print("=" * 70)
             print(f"[{index + 1}/{total}] {website}")
-            print("=" * 60)
-
-            logger.info(f"Scanning: {website}")
+            print("=" * 70)
 
             try:
 
@@ -51,6 +51,10 @@ class Scanner:
                     website
                 )
 
+                # Save to Database
+                repo.save(result)
+
+                # Save to Excel
                 excel.add(
                     result["company"],
                     result["website"],
@@ -66,22 +70,22 @@ class Scanner:
                 ReportService.print(result)
 
                 logger.info(
-                    f"{result['company']} | Emails:{len(result['emails'])} | Phones:{len(result['phones'])}"
+                    f"Saved: {result['company']}"
                 )
 
             except Exception as e:
 
-                logger.error(f"{website} | {e}")
+                logger.error(str(e))
 
-                print(f"❌ {e}")
+                print(f"\n❌ {website}")
+                print(e)
 
         browser.stop()
 
         excel.save()
 
-        logger.info("Scan Finished")
-
-        print("\n" + "=" * 60)
-        print("✅ Scan Finished")
-        print("📄 Excel saved to output/leads.xlsx")
-        print("=" * 60)
+        print("\n" + "=" * 70)
+        print("✅ Scan Complete")
+        print("📄 Excel Updated")
+        print("🗄 Database Updated")
+        print("=" * 70)
