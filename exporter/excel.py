@@ -10,6 +10,7 @@ class ExcelExporter:
         self.sheet = self.workbook.active
 
         self.sheet.append([
+            "Company",
             "Website",
             "Title",
             "Emails",
@@ -19,6 +20,7 @@ class ExcelExporter:
 
     def add(
         self,
+        company,
         website,
         title,
         emails,
@@ -27,6 +29,7 @@ class ExcelExporter:
     ):
 
         self.sheet.append([
+            company,
             website,
             title,
             ", ".join(emails),

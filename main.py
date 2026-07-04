@@ -4,13 +4,14 @@ from scraper.browser import Browser
 from scraper.email import EmailExtractor
 from scraper.phone import PhoneExtractor
 from scraper.contact import ContactFinder
+from scraper.company import CompanyExtractor
 from exporter.excel import ExcelExporter
 
 
 def main():
 
     print("=" * 60)
-    print("🚀 LeadGen Pro v1.1")
+    print("🚀 LeadGen Pro v1.2")
     print("=" * 60)
 
     browser = Browser()
@@ -20,12 +21,16 @@ def main():
 
     df = pd.read_csv("input/websites.csv")
 
+    total = len(df)
+
     for index, row in df.iterrows():
 
         website = row["website"]
 
-        print(f"\nScanning ({index + 1}/{len(df)})")
+        print("\n" + "=" * 60)
+        print(f"Scanning ({index + 1}/{total})")
         print(website)
+        print("=" * 60)
 
         try:
 
@@ -34,6 +39,8 @@ def main():
             html = page.content()
 
             title = page.title()
+
+            company = CompanyExtractor.extract(page, html)
 
             emails = EmailExtractor.extract(html)
 
@@ -44,7 +51,7 @@ def main():
                 html
             )
 
-            # Visit contact pages
+            # Visit every contact page
             for contact in contacts:
 
                 try:
@@ -68,6 +75,7 @@ def main():
             phones = sorted(set(phones))
 
             excel.add(
+                company,
                 website,
                 title,
                 emails,
@@ -75,9 +83,10 @@ def main():
                 contacts
             )
 
-            print(f"✅ {len(emails)} emails")
-            print(f"✅ {len(phones)} phones")
-            print(f"✅ {len(contacts)} contact pages")
+            print(f"🏢 Company : {company}")
+            print(f"📧 Emails  : {len(emails)}")
+            print(f"📞 Phones  : {len(phones)}")
+            print(f"📍 Contacts: {len(contacts)}")
 
         except Exception as e:
 
@@ -87,8 +96,11 @@ def main():
 
     excel.save()
 
-    print("\n🎉 Scan Complete")
-    print("📄 output/leads.xlsx")
+    print("\n")
+    print("=" * 60)
+    print("✅ Scan Complete")
+    print("📄 Excel saved to output/leads.xlsx")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
