@@ -3,6 +3,8 @@ from scraper.phone import PhoneExtractor
 from scraper.address import AddressExtractor
 from scraper.crawler import SmartCrawler
 
+from network.fetcher import Fetcher
+
 
 class CrawlService:
 
@@ -24,9 +26,12 @@ class CrawlService:
 
             try:
 
-                page = browser.open(url)
+                print(f"   ↳ {url}")
 
-                crawl_html = page.content()
+                crawl_html = Fetcher.get(url)
+
+                if not crawl_html:
+                    continue
 
                 emails.extend(
                     EmailExtractor.extract(crawl_html)
@@ -41,7 +46,6 @@ class CrawlService:
                 )
 
             except Exception:
-
                 pass
 
         emails = sorted(set(emails))

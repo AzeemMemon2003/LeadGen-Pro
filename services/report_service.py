@@ -17,15 +17,16 @@ class ReportService:
         print(f"H1                : {'✅' if seo['h1'] else '❌'}")
         print(f"Images without ALT: {seo['images_without_alt']}")
 
-        score = result["score"]
+        qualification = result["qualification"]
 
-        print("\n⭐ Lead Score")
-        print(f"Score : {score['score']}/100")
+        print("\n⭐ Lead Qualification")
+        print(f"Score    : {qualification['score']}/100")
+        print(f"Priority : {qualification['priority']}")
 
-        if score["opportunities"]:
+        if qualification["reasons"]:
 
-            print("\nOpportunities:")
+            print("\nReasons:")
 
-            for item in score["opportunities"]:
+            for reason in qualification["reasons"]:
 
-                print(f"• {item}")
+                print(f"✔ {reason}")

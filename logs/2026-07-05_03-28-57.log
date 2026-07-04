@@ -1,0 +1,8 @@
+2026-07-05 03:28:57,305 | INFO | LeadGen Pro Started
+2026-07-05 03:28:57,309 | INFO | Scanning: https://openai.com
+2026-07-05 03:29:03,366 | ERROR | https://openai.com | Failed to open https://openai.com
+2026-07-05 03:29:03,369 | INFO | Scanning: https://python.org
+2026-07-05 03:29:09,420 | ERROR | https://python.org | Failed to open https://python.org
+2026-07-05 03:29:09,421 | INFO | Scanning: https://cloudflare.com
+2026-07-05 03:29:15,471 | ERROR | https://cloudflare.com | Failed to open https://cloudflare.com
+2026-07-05 03:29:15,545 | INFO | Scan Finished

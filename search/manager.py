@@ -2,6 +2,7 @@ import pandas as pd
 
 from search.search import SearchEngine
 from maps.google_maps import GoogleMaps
+from helpers.url_helper import URLHelper
 
 
 class SearchManager:
@@ -22,17 +23,25 @@ class SearchManager:
         choice = input("\nChoice (1/2/3): ").strip()
 
         if choice == "1":
-            return self.from_csv()
+            websites = self.from_csv()
 
         elif choice == "2":
-            return self.by_keyword()
+            websites = self.by_keyword()
 
         elif choice == "3":
-            return self.by_maps()
+            websites = self.by_maps()
 
-        print("Invalid Choice.")
+        else:
 
-        return []
+            print("Invalid Choice.")
+
+            return []
+
+        websites = URLHelper.remove_duplicates(websites)
+
+        print(f"\n✅ Unique Websites: {len(websites)}")
+
+        return websites
 
     def from_csv(self):
 
@@ -50,16 +59,12 @@ class SearchManager:
 
             return []
 
-        print("\n🔍 Searching...")
+        print("\n🔍 Searching Google...")
 
-        websites = self.engine.search(
+        return self.engine.search(
             keyword,
             max_results=20
         )
-
-        print(f"\n✅ Found {len(websites)} websites")
-
-        return websites
 
     def by_maps(self):
 
@@ -70,11 +75,8 @@ class SearchManager:
         limit = input("Results (default 10): ").strip()
 
         if not limit:
-
             limit = 10
-
         else:
-
             limit = int(limit)
 
         businesses = self.maps.search(
@@ -90,9 +92,6 @@ class SearchManager:
             website = business.get("website", "").strip()
 
             if website:
-
                 websites.append(website)
-
-        print(f"\n🌍 Websites Found: {len(websites)}")
 
         return websites

@@ -4,9 +4,10 @@ from scraper.phone import PhoneExtractor
 from scraper.address import AddressExtractor
 from scraper.tech import TechExtractor
 from scraper.seo import SEOExtractor
-from scraper.scoring import LeadScorer
 
 from services.crawl_service import CrawlService
+
+from intelligence.qualifier import LeadQualifier
 
 
 class ScanService:
@@ -49,15 +50,6 @@ class ScanService:
         phones = sorted(set(phones))
         addresses = sorted(set(addresses))
 
-        score = LeadScorer.score(
-            emails,
-            phones,
-            addresses,
-            technology,
-            seo,
-            crawl["pages"]
-        )
-
         social = {
             "linkedin": "",
             "facebook": "",
@@ -65,7 +57,7 @@ class ScanService:
             "twitter": ""
         }
 
-        return {
+        result = {
             "company": company,
             "website": website,
             "title": title,
@@ -74,7 +66,10 @@ class ScanService:
             "addresses": addresses,
             "technology": technology,
             "seo": seo,
-            "score": score,
             "social": social,
             "crawl_pages": crawl["pages"]
         }
+
+        result["qualification"] = LeadQualifier.qualify(result)
+
+        return result
