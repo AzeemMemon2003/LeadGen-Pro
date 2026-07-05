@@ -7,6 +7,10 @@ class ReportService:
         print(f"🌐 Website : {result['website']}")
         print(f"💻 Tech    : {', '.join(result['technology'])}")
 
+        # ----------------------------
+        # Contact Intelligence
+        # ----------------------------
+
         contact = result.get("contact", {})
 
         print("\n📇 Contact Intelligence")
@@ -21,6 +25,10 @@ class ReportService:
         print(f"Backup Emails : {len(backup_emails)}")
         print(f"Backup Phones : {len(backup_phones)}")
 
+        # ----------------------------
+        # SEO Audit
+        # ----------------------------
+
         seo = result["seo"]
 
         print("\n📊 SEO Audit")
@@ -28,6 +36,38 @@ class ReportService:
         print(f"Meta Description  : {'✅' if seo['meta_description'] else '❌'}")
         print(f"H1                : {'✅' if seo['h1'] else '❌'}")
         print(f"Images without ALT: {seo['images_without_alt']}")
+
+        # ----------------------------
+        # Website Intelligence
+        # ----------------------------
+
+        website = result.get("website_intelligence", {})
+
+        print("\n🌐 Website Intelligence")
+        print(f"Website Score : {website.get('website_score', 0)}/100")
+
+        strengths = website.get("strengths", [])
+        weaknesses = website.get("weaknesses", [])
+        opportunities = website.get("sales_opportunities", [])
+
+        if strengths:
+            print("\n✅ Strengths")
+            for item in strengths:
+                print(f"✔ {item}")
+
+        if weaknesses:
+            print("\n⚠ Weaknesses")
+            for item in weaknesses:
+                print(f"• {item}")
+
+        if opportunities:
+            print("\n🚀 Opportunities")
+            for item in opportunities:
+                print(f"💼 {item}")
+
+        # ----------------------------
+        # Lead Qualification
+        # ----------------------------
 
         qualification = result["qualification"]
 
@@ -42,6 +82,10 @@ class ReportService:
             for reason in qualification["reasons"]:
 
                 print(f"✔ {reason}")
+
+        # ----------------------------
+        # Sales Opportunity
+        # ----------------------------
 
         opportunity = result["opportunity"]
 

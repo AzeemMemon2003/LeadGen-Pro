@@ -1,25 +1,47 @@
-class CampaignFilter:
+class CampaignFilters:
 
     @staticmethod
-    def filter(leads, min_score=70, priority="HOT", status="Not Contacted"):
+    def high_priority(leads):
+        return [
+            lead for lead in leads
+            if lead.get("priority") == "HIGH"
+        ]
 
-        filtered = []
+    @staticmethod
+    def has_email(leads):
+        return [
+            lead for lead in leads
+            if lead.get("primary_email")
+        ]
 
-        for lead in leads:
+    @staticmethod
+    def has_phone(leads):
+        return [
+            lead for lead in leads
+            if lead.get("phone")
+        ]
 
-            score = lead["score"]
-            lead_priority = lead["priority"]
-            lead_status = lead["status"]
+    @staticmethod
+    def website_score_below(leads, score):
+        return [
+            lead for lead in leads
+            if lead.get("website_score", 0) < score
+        ]
 
-            if score < min_score:
-                continue
+    @staticmethod
+    def technology(leads, keyword):
+        keyword = keyword.lower()
 
-            if priority and lead_priority != priority:
-                continue
+        return [
+            lead for lead in leads
+            if keyword in str(
+                lead.get("technology", "")
+            ).lower()
+        ]
 
-            if status and lead_status != status:
-                continue
-
-            filtered.append(lead)
-
-        return filtered
+    @staticmethod
+    def no_contact_form(leads):
+        return [
+            lead for lead in leads
+            if not lead.get("contact_form")
+        ]

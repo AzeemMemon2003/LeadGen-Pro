@@ -1,77 +1,82 @@
 import csv
-import os
-
-from database.repository import LeadRepository
-from campaign.filter import CampaignFilter
+from pathlib import Path
 
 
 class CampaignExporter:
 
-    @staticmethod
-    def export():
+    def __init__(self):
 
-        repo = LeadRepository()
+        self.output_dir = Path("output/campaigns")
 
-        rows = repo.all()
-
-        leads = []
-
-        for row in rows:
-
-            leads.append({
-
-                "id": row[0],
-                "company": row[1],
-                "website": row[2],
-                "email": row[3],
-                "score": row[4],
-                "priority": row[5],
-                "status": row[6]
-
-            })
-
-        print("\nCampaign Export")
-
-        min_score = int(input("Minimum Score (default 70): ") or "70")
-
-        priority = input("Priority (HOT/WARM/LOW) [HOT]: ").strip().upper() or "HOT"
-
-        status = input("Status [Not Contacted]: ").strip() or "Not Contacted"
-
-        filtered = CampaignFilter.filter(
-            leads,
-            min_score=min_score,
-            priority=priority,
-            status=status
+        self.output_dir.mkdir(
+            parents=True,
+            exist_ok=True
         )
 
-        os.makedirs("output", exist_ok=True)
+    def export(self, campaigns):
 
-        filename = "output/campaign_export.csv"
+        for campaign_name, leads in campaigns.items():
 
-        with open(filename, "w", newline="", encoding="utf-8") as f:
+            filename = self.output_dir / f"{campaign_name}.csv"
 
-            writer = csv.writer(f)
+            with open(
+                filename,
+                "w",
+                newline="",
+                encoding="utf-8"
+            ) as file:
 
-            writer.writerow([
-                "Company",
-                "Website",
-                "Email",
-                "Score",
-                "Priority",
-                "Status"
-            ])
-
-            for lead in filtered:
+                writer = csv.writer(file)
 
                 writer.writerow([
-                    lead["company"],
-                    lead["website"],
-                    lead["email"],
-                    lead["score"],
-                    lead["priority"],
-                    lead["status"]
+                    "Company",
+                    "Website",
+                    "Email",
+                    "Phone",
+                    "Priority",
+                    "Website Score"
                 ])
 
-        print(f"\n✅ Exported {len(filtered)} leads")
-        print(f"📄 {filename}")
+                for lead in leads:
+
+                    writer.writerow([
+
+                        lead.get("company", ""),
+
+                        lead.get("website", ""),
+
+                        lead.get("primary_email", ""),
+
+                        lead.get("phone", ""),
+
+                        lead.get("priority", ""),
+
+                        lead.get("website_score", "")
+
+                    ])
+
+        print(
+            f"\n✅ {len(campaigns)} campaign files exported to {self.output_dir}"
+        )
+
+
+if __name__ == "__main__":
+
+    sample = {
+
+        "seo_campaign": [
+
+            {
+                "company": "ABC Dental",
+                "website": "https://abc.com",
+                "primary_email": "info@abc.com",
+                "phone": "+123456789",
+                "priority": "HIGH",
+                "website_score": 58
+            }
+
+        ]
+
+    }
+
+    CampaignExporter().export(sample)

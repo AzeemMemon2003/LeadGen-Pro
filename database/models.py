@@ -32,6 +32,14 @@ CREATE TABLE IF NOT EXISTS leads (
 
     linkedin TEXT,
 
+    website_score INTEGER,
+
+    website_strengths TEXT,
+
+    website_weaknesses TEXT,
+
+    website_opportunities TEXT,
+
     created_at TEXT,
 
     updated_at TEXT

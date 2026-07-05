@@ -4,11 +4,13 @@ from scraper.phone import PhoneExtractor
 from scraper.address import AddressExtractor
 from scraper.tech import TechExtractor
 from scraper.seo import SEOExtractor
+
 from intelligence.contact import ContactIntelligence
+from intelligence.qualifier import LeadQualifier
+from intelligence.website_intelligence import WebsiteIntelligence
 
 from services.crawl_service import CrawlService
 
-from intelligence.qualifier import LeadQualifier
 from ai.opportunity import OpportunityEngine
 
 
@@ -37,6 +39,11 @@ class ScanService:
         technology = TechExtractor.extract(html)
 
         seo = SEOExtractor.extract(html)
+
+        website_intelligence = WebsiteIntelligence.analyze(
+            website,
+            html
+        )
 
         crawl = CrawlService.crawl(
             browser,
@@ -68,6 +75,7 @@ class ScanService:
             "addresses": addresses,
             "technology": technology,
             "seo": seo,
+            "website_intelligence": website_intelligence,
             "social": social,
             "crawl_pages": crawl["pages"]
         }

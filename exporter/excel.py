@@ -25,6 +25,10 @@ class ExcelExporter:
             "Facebook",
             "Instagram",
             "Twitter",
+            "Website Score",
+            "Strengths",
+            "Weaknesses",
+            "Sales Opportunities",
             "Contact Pages"
         ]
 
@@ -41,7 +45,6 @@ class ExcelExporter:
         )
 
         for cell in self.sheet[1]:
-
             cell.fill = header_fill
             cell.font = header_font
             cell.alignment = Alignment(
@@ -51,7 +54,7 @@ class ExcelExporter:
 
         self.sheet.freeze_panes = "A2"
 
-        self.sheet.auto_filter.ref = "A1:L1"
+        self.sheet.auto_filter.ref = "A1:P1"
 
     def add(
         self,
@@ -63,7 +66,8 @@ class ExcelExporter:
         addresses,
         technology,
         social,
-        contacts
+        contacts,
+        website_intelligence
     ):
 
         self.sheet.append([
@@ -82,13 +86,27 @@ class ExcelExporter:
 
             ", ".join(technology),
 
-            social["linkedin"],
+            social.get("linkedin", ""),
 
-            social["facebook"],
+            social.get("facebook", ""),
 
-            social["instagram"],
+            social.get("instagram", ""),
 
-            social["twitter"],
+            social.get("twitter", ""),
+
+            website_intelligence.get("website_score", 0),
+
+            ", ".join(
+                website_intelligence.get("strengths", [])
+            ),
+
+            ", ".join(
+                website_intelligence.get("weaknesses", [])
+            ),
+
+            ", ".join(
+                website_intelligence.get("sales_opportunities", [])
+            ),
 
             ", ".join(contacts)
 
@@ -106,23 +124,16 @@ class ExcelExporter:
 
             for cell in column:
 
-                try:
+                if cell.value:
 
-                    if cell.value:
-
-                        max_length = max(
-                            max_length,
-                            len(str(cell.value))
-                        )
-
-                except:
-                    pass
-
-            adjusted_width = min(max_length + 3, 60)
+                    max_length = max(
+                        max_length,
+                        len(str(cell.value))
+                    )
 
             self.sheet.column_dimensions[
                 column_letter
-            ].width = adjusted_width
+            ].width = min(max_length + 3, 60)
 
         self.workbook.save(
             "output/leads.xlsx"

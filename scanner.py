@@ -1,12 +1,16 @@
 from scraper.browser import Browser
 
-from exporter.excel import ExcelExporter
 from search.manager import SearchManager
 
 from services.scan_service import ScanService
 from services.report_service import ReportService
 
 from database.repository import LeadRepository
+
+from exporter.manager import ExportManager
+
+from campaign.builder import CampaignBuilder
+from campaign.exporter import CampaignExporter
 
 from utils.logger import Logger
 
@@ -21,7 +25,7 @@ class Scanner:
 
         if not websites:
 
-            print("\nNo websites found.")
+            print("\n❌ No websites found.")
 
             return
 
@@ -31,8 +35,6 @@ class Scanner:
         logger = Logger.get_logger()
 
         repo = LeadRepository()
-
-        from exporter.manager import ExportManager
 
         exporter = ExportManager()
 
@@ -56,9 +58,10 @@ class Scanner:
                 # Save to Database
                 repo.save(result)
 
-                # Save to Excel
+                # Export to Excel
                 exporter.add(result)
 
+                # Print Report
                 ReportService.print(result)
 
                 logger.info(
@@ -74,10 +77,26 @@ class Scanner:
 
         browser.stop()
 
+        # Save Excel
         exporter.save()
+
+        # -----------------------------
+        # Build Campaigns
+        # -----------------------------
+
+        leads = repo.all()
+
+        builder = CampaignBuilder(leads)
+
+        campaigns = builder.build()
+
+        CampaignExporter().export(campaigns)
+
+        builder.stats(campaigns)
 
         print("\n" + "=" * 70)
         print("✅ Scan Complete")
         print("📄 Excel Updated")
+        print("📢 Campaigns Generated")
         print("🗄 Database Updated")
         print("=" * 70)

@@ -16,15 +16,26 @@ class LeadViewer:
 
             return
 
-        print("\n" + "=" * 90)
+        print("\n" + "=" * 100)
+        print("📋 LeadGen Pro CRM")
+        print("=" * 100)
 
         for lead in leads:
 
-            print(f"ID       : {lead[0]}")
-            print(f"Company  : {lead[1]}")
-            print(f"Website  : {lead[2]}")
-            print(f"Email    : {lead[3]}")
-            print(f"Score    : {lead[4]}")
-            print(f"Priority : {lead[5]}")
-            print(f"Status   : {lead[6]}")
-            print("-" * 90)
+            print(f"🏢 Company        : {lead['company']}")
+            print(f"🌐 Website        : {lead['website']}")
+            print(f"📧 Primary Email  : {lead['primary_email'] or 'Not Found'}")
+            print(f"📞 Phone          : {lead['phone'] or 'Not Found'}")
+            print(f"⭐ Lead Score     : {lead['score']}/100")
+            print(f"🌍 Website Score  : {lead['website_score']}/100")
+            print(f"🔥 Priority       : {lead['priority']}")
+            print(f"📌 Status         : {lead['status']}")
+
+            technology = lead.get("technology", [])
+
+            if technology:
+                print(f"💻 Technology     : {', '.join(technology)}")
+            else:
+                print("💻 Technology     : Not Detected")
+
+            print("-" * 100)
