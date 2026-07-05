@@ -1,17 +1,12 @@
 import csv
-from pathlib import Path
+from config.settings import Settings
 
 
 class CampaignExporter:
 
     def __init__(self):
 
-        self.output_dir = Path("output/campaigns")
-
-        self.output_dir.mkdir(
-            parents=True,
-            exist_ok=True
-        )
+        self.output_dir = Settings.CAMPAIGN_DIR
 
     def export(self, campaigns):
 

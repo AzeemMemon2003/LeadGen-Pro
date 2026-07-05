@@ -135,6 +135,4 @@ class ExcelExporter:
                 column_letter
             ].width = min(max_length + 3, 60)
 
-        self.workbook.save(
-            "output/leads.xlsx"
-        )
+        from config.settings import Settings

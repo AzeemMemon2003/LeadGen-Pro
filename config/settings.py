@@ -46,3 +46,17 @@ class Settings:
         cls.CAMPAIGN_DIR.mkdir(exist_ok=True)
 
         cls.LOG_DIR.mkdir(exist_ok=True)
+
+    # Browser
+
+HEADLESS = True
+
+BROWSER_TIMEOUT = 30000
+
+USER_AGENT = (
+    "Mozilla/5.0 "
+    "(Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 "
+    "(KHTML, like Gecko) "
+    "Chrome/138.0 Safari/537.36"
+)

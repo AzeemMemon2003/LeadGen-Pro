@@ -1,20 +1,31 @@
 import sqlite3
-import os
+
+from config.settings import Settings
 
 
 class Database:
 
     def __init__(self):
 
-        os.makedirs("data", exist_ok=True)
+        Settings.create_directories()
 
-        self.connection = sqlite3.connect("data/leadgen.db")
+        self.connection = sqlite3.connect(
+            Settings.DATABASE
+        )
+
+        self.connection.row_factory = sqlite3.Row
 
         self.cursor = self.connection.cursor()
 
     def execute(self, query, params=()):
 
         self.cursor.execute(query, params)
+
+        self.connection.commit()
+
+    def executemany(self, query, params):
+
+        self.cursor.executemany(query, params)
 
         self.connection.commit()
 
