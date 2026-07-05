@@ -14,6 +14,8 @@ from campaign.exporter import CampaignExporter
 
 from proposal.manager import ProposalManager
 
+from integration.manager import IntegrationManager
+
 from utils.logger import Logger
 
 
@@ -57,18 +59,54 @@ class Scanner:
                     website
                 )
 
-                # Save to Database
+                # -----------------------------
+                # Database
+                # -----------------------------
+
                 repo.save(result)
 
-                # Generate Proposal PDF
-                proposal = ProposalManager.generate(result)
+                # -----------------------------
+                # Proposal PDF
+                # -----------------------------
 
-                print(f"\n📄 Proposal Generated: {proposal}")
+                proposal = ProposalManager.generate(
+                    result
+                )
 
-                # Export to Excel
+                print(
+                    f"\n📄 Proposal Generated : {proposal}"
+                )
+
+                # -----------------------------
+                # n8n Payload / Webhook
+                # -----------------------------
+
+                payload, response = IntegrationManager.send(
+
+                    result,
+
+                    proposal
+
+                )
+
+                if response["success"]:
+
+                    print("✅ n8n Webhook Sent")
+
+                else:
+
+                    print(f"⚠ {response['message']}")
+
+                # -----------------------------
+                # Excel
+                # -----------------------------
+
                 exporter.add(result)
 
-                # Print Report
+                # -----------------------------
+                # Console Report
+                # -----------------------------
+
                 ReportService.print(result)
 
                 logger.info(
@@ -80,27 +118,41 @@ class Scanner:
                 logger.error(str(e))
 
                 print(f"\n❌ {website}")
+
                 print(e)
 
         browser.stop()
 
+        # -----------------------------
         # Save Excel
+        # -----------------------------
+
         exporter.save()
 
-        # Build Campaigns
+        # -----------------------------
+        # Campaign Builder
+        # -----------------------------
+
         leads = repo.all()
 
-        builder = CampaignBuilder(leads)
+        builder = CampaignBuilder(
+            leads
+        )
 
         campaigns = builder.build()
 
-        CampaignExporter().export(campaigns)
+        CampaignExporter().export(
+            campaigns
+        )
 
-        builder.stats(campaigns)
+        builder.stats(
+            campaigns
+        )
 
         print("\n" + "=" * 70)
         print("✅ Scan Complete")
         print("📄 Proposal PDFs Generated")
+        print("🔗 n8n Integration Completed")
         print("📄 Excel Updated")
         print("📢 Campaigns Generated")
         print("🗄 Database Updated")

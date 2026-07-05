@@ -79,3 +79,9 @@ class Settings:
             parents=True,
             exist_ok=True
         )
+
+        # ---------------------------------
+# N8N
+# ---------------------------------
+
+N8N_WEBHOOK = ""
