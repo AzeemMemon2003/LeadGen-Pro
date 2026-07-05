@@ -1,10 +1,31 @@
 class OpportunityEngine:
 
+    SERVICE_CATALOG = {
+        "Technical SEO": 500,
+        "On-Page SEO": 400,
+        "Content Optimization": 350,
+        "Image SEO": 250,
+        "WordPress Maintenance": 300,
+        "Shopify Optimization": 600,
+        "Website Redesign": 2000,
+        "Lead Capture": 500,
+        "Conversion Optimization": 700,
+        "Google Analytics 4 Setup": 250,
+        "Google Tag Manager Setup": 200,
+        "Meta Pixel Setup": 200,
+        "Privacy Policy Implementation": 150,
+        "Local SEO": 800,
+        "Google Business Profile Optimization": 600,
+    }
+
     @staticmethod
     def analyze(result):
 
         seo = result["seo"]
+
         tech = [t.lower() for t in result["technology"]]
+
+        website = result.get("website_intelligence", {})
 
         problems = []
         services = []
@@ -38,10 +59,10 @@ class OpportunityEngine:
         if "wordpress" in tech:
             services.append("WordPress Maintenance")
 
-        if "shopify" in tech:
+        elif "shopify" in tech:
             services.append("Shopify Optimization")
 
-        if "wix" in tech:
+        elif "wix" in tech:
             services.append("Website Redesign")
 
         # -----------------------
@@ -57,41 +78,91 @@ class OpportunityEngine:
             services.append("Conversion Optimization")
 
         # -----------------------
+        # Website Intelligence
+        # -----------------------
+
+        for item in website.get(
+            "sales_opportunities",
+            []
+        ):
+
+            if item == "Install Google Analytics 4":
+
+                services.append(
+                    "Google Analytics 4 Setup"
+                )
+
+            elif item == "Install Google Tag Manager":
+
+                services.append(
+                    "Google Tag Manager Setup"
+                )
+
+            elif item == "Install Meta Pixel":
+
+                services.append(
+                    "Meta Pixel Setup"
+                )
+
+            elif item == "Add Privacy Policy":
+
+                services.append(
+                    "Privacy Policy Implementation"
+                )
+
+            elif item == "Create Social Media Profiles":
+
+                services.append(
+                    "Local SEO"
+                )
+
+        # -----------------------
         # Remove duplicates
         # -----------------------
 
         services = sorted(set(services))
 
-        # -----------------------
-        # Summary
-        # -----------------------
+        estimate = sum(
 
-        if not problems:
-
-            summary = (
-                "This business appears technically healthy. "
-                "Focus on growth opportunities."
+            OpportunityEngine.SERVICE_CATALOG.get(
+                service,
+                0
             )
 
-            priority = "Low"
+            for service in services
+
+        )
+
+        # -----------------------
+        # Priority
+        # -----------------------
+
+        total_issues = len(problems)
+
+        if total_issues >= 6:
+            priority = "HIGH"
+
+        elif total_issues >= 3:
+            priority = "MEDIUM"
 
         else:
+            priority = "LOW"
 
-            summary = (
-                f"Found {len(problems)} improvement opportunities "
-                "that Agency Hash can help solve."
-            )
-
-            if len(problems) >= 5:
-                priority = "High"
-            elif len(problems) >= 3:
-                priority = "Medium"
-            else:
-                priority = "Low"
+        summary = (
+            f"Found {len(services)} service opportunities "
+            f"worth approximately ${estimate:,}."
+        )
 
         return {
-            "summary": summary,
+
             "priority": priority,
+
+            "summary": summary,
+
             "problems": problems,
-            "services": services
+
+            "services": services,
+
+            "estimated_value": estimate
+
         }

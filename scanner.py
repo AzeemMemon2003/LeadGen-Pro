@@ -12,6 +12,8 @@ from exporter.manager import ExportManager
 from campaign.builder import CampaignBuilder
 from campaign.exporter import CampaignExporter
 
+from proposal.manager import ProposalManager
+
 from utils.logger import Logger
 
 
@@ -58,6 +60,11 @@ class Scanner:
                 # Save to Database
                 repo.save(result)
 
+                # Generate Proposal PDF
+                proposal = ProposalManager.generate(result)
+
+                print(f"\n📄 Proposal Generated: {proposal}")
+
                 # Export to Excel
                 exporter.add(result)
 
@@ -80,10 +87,7 @@ class Scanner:
         # Save Excel
         exporter.save()
 
-        # -----------------------------
         # Build Campaigns
-        # -----------------------------
-
         leads = repo.all()
 
         builder = CampaignBuilder(leads)
@@ -96,6 +100,7 @@ class Scanner:
 
         print("\n" + "=" * 70)
         print("✅ Scan Complete")
+        print("📄 Proposal PDFs Generated")
         print("📄 Excel Updated")
         print("📢 Campaigns Generated")
         print("🗄 Database Updated")
