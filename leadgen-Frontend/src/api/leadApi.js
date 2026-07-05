@@ -9,13 +9,13 @@ export const scanWebsite = async (url) => {
     websites: [url],
   });
 
-  return res;
+  return res.data;
 };
 
 export const getLeads = async () => {
   const res = await API.get("/api/leads");
 
-  console.log("Axios Response:", res);
+  console.log("Axios Response:", res.data);
 
-  return res;
+  return res.data;
 };

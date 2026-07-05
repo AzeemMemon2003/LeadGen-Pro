@@ -2,30 +2,32 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Leads from "./pages/Leads";
 import Scan from "./pages/Scan";
-import Sidebar from "./components/Sidebar";
+
+import Sidebar from "./components/layout/Sidebar";
+import Topbar from "./components/layout/Topbar";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="flex h-screen bg-gray-50">
 
-        <Sidebar />
+      <Sidebar />
 
-        <main className="flex-1 p-8 overflow-y-auto">
+      <div className="ml-64 min-h-screen bg-slate-100">
 
-          <div className="bg-white rounded-xl border p-6 min-h-full">
+        <Topbar />
 
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/leads" element={<Leads />} />
-              <Route path="/scan" element={<Scan />} />
-            </Routes>
+        <main className="p-8">
 
-          </div>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/leads" element={<Leads />} />
+            <Route path="/scan" element={<Scan />} />
+          </Routes>
 
         </main>
 
       </div>
+
     </BrowserRouter>
   );
 }
