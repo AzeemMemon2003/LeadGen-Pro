@@ -32,7 +32,9 @@ class Scanner:
 
         repo = LeadRepository()
 
-        excel = ExcelExporter()
+        from exporter.manager import ExportManager
+
+        exporter = ExportManager()
 
         total = len(websites)
 
@@ -55,17 +57,7 @@ class Scanner:
                 repo.save(result)
 
                 # Save to Excel
-                excel.add(
-                    result["company"],
-                    result["website"],
-                    result["title"],
-                    result["emails"],
-                    result["phones"],
-                    result["addresses"],
-                    result["technology"],
-                    result["social"],
-                    result["crawl_pages"]
-                )
+                exporter.add(result)
 
                 ReportService.print(result)
 
@@ -82,7 +74,7 @@ class Scanner:
 
         browser.stop()
 
-        excel.save()
+        exporter.save()
 
         print("\n" + "=" * 70)
         print("✅ Scan Complete")
