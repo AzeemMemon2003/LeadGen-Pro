@@ -1,0 +1,29 @@
+2026-07-06 03:08:29,140 | ERROR | near "VALUES": syntax error
+2026-07-06 03:08:31,105 | ERROR | near "VALUES": syntax error
+2026-07-06 03:08:37,504 | ERROR | near "VALUES": syntax error
+2026-07-06 03:08:42,353 | ERROR | Failed to open https://health.usnews.com/dentists/california/san-jose
+Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://health.usnews.com/dentists/california/san-jose
+Call log:
+  - navigating to "https://health.usnews.com/dentists/california/san-jose", waiting until "domcontentloaded"
+
+2026-07-06 03:08:54,158 | ERROR | near "VALUES": syntax error
+2026-07-06 03:09:05,529 | ERROR | near "VALUES": syntax error
+2026-07-06 03:09:17,541 | ERROR | near "VALUES": syntax error
+2026-07-06 03:09:26,282 | ERROR | near "VALUES": syntax error
+2026-07-06 03:09:34,975 | ERROR | near "VALUES": syntax error
+2026-07-06 03:10:50,619 | ERROR | Failed to open https://sanjosesmilearts.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://sanjosesmilearts.com/
+Call log:
+  - navigating to "https://sanjosesmilearts.com/", waiting until "domcontentloaded"
+
+2026-07-06 03:10:55,603 | ERROR | near "VALUES": syntax error
+2026-07-06 03:11:03,357 | ERROR | near "VALUES": syntax error
+2026-07-06 03:11:13,955 | ERROR | near "VALUES": syntax error
+2026-07-06 03:12:29,591 | ERROR | Failed to open https://sjdentalspecialists.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://sjdentalspecialists.com/
+Call log:
+  - navigating to "https://sjdentalspecialists.com/", waiting until "domcontentloaded"
+
+2026-07-06 03:12:38,958 | ERROR | near "VALUES": syntax error
+2026-07-06 03:12:49,512 | ERROR | near "VALUES": syntax error
+2026-07-06 03:12:52,826 | ERROR | near "VALUES": syntax error

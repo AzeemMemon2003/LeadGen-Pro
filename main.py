@@ -3,7 +3,7 @@ from scanner import Scanner
 from crm.menu import CRMMenu
 from crm.view import LeadViewer
 from crm.status import LeadStatus
-from analytics.dashboard import Dashboard
+
 
 
 def main():

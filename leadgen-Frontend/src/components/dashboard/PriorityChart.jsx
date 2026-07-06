@@ -3,13 +3,9 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts";
-
-const data = [
-  { name: "High", value: 42 },
-  { name: "Medium", value: 81 },
-  { name: "Low", value: 125 },
-];
 
 const COLORS = [
   "#ef4444",
@@ -17,9 +13,27 @@ const COLORS = [
   "#3b82f6",
 ];
 
-export default function PriorityChart() {
+export default function PriorityChart({ data }) {
+
+  if (!data) return null;
+
+  const chartData = [
+    {
+      name: "High",
+      value: data.high,
+    },
+    {
+      name: "Medium",
+      value: data.medium,
+    },
+    {
+      name: "Low",
+      value: data.low,
+    },
+  ];
+
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-md border">
+    <div className="rounded-2xl border bg-white p-6 shadow-md">
 
       <h2 className="mb-6 text-xl font-semibold">
         Priority Distribution
@@ -27,24 +41,29 @@ export default function PriorityChart() {
 
       <div className="h-72">
 
-        <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
 
           <PieChart>
 
             <Pie
-              data={data}
+              data={chartData}
               dataKey="value"
+              nameKey="name"
               outerRadius={90}
+              label
             >
 
-              {data.map((entry, index) => (
+              {chartData.map((entry, index) => (
                 <Cell
-                  key={index}
+                  key={entry.name}
                   fill={COLORS[index]}
                 />
               ))}
 
             </Pie>
+
+            <Tooltip />
+            <Legend />
 
           </PieChart>
 

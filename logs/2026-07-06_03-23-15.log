@@ -1,0 +1,22 @@
+2026-07-06 03:23:20,604 | INFO | Saved: Blach Construction
+2026-07-06 03:23:25,131 | INFO | Saved: San Jose Construction
+2026-07-06 03:23:28,683 | INFO | Saved: General Contractors Magazine
+2026-07-06 03:23:30,858 | INFO | Saved: Homebuilderdigest
+2026-07-06 03:23:42,739 | INFO | Saved: AK Construction
+2026-07-06 03:23:47,843 | INFO | Saved: SAN JOSE CONSTRUCTION CO. LLC, LLC16907-2004
+2026-07-06 03:23:59,492 | INFO | Saved: Commercial and Residential Construction Contractor
+2026-07-06 03:24:10,909 | WARNING | HTTP 404: https://ingenuityconstructiongroup.com/contact-us/
+2026-07-06 03:24:10,911 | WARNING | Empty response: https://ingenuityconstructiongroup.com/contact-us/
+2026-07-06 03:24:10,951 | INFO | Saved: Commercial and Residential Construction Contractor
+2026-07-06 03:24:14,447 | INFO | Saved: The
+2026-07-06 03:24:26,349 | INFO | Saved: San Jose
+2026-07-06 03:24:28,680 | INFO | Saved: General Contractors Magazine
+2026-07-06 03:24:35,568 | INFO | Saved: San Francisco Architects
+2026-07-06 03:24:43,918 | INFO | Saved: Sorry, the page you requested was not found.
+2026-07-06 03:24:48,000 | ERROR | Failed to open https://mccarthy.com/locations/san-jose
+Page.goto: net::ERR_NAME_NOT_RESOLVED at https://mccarthy.com/locations/san-jose
+Call log:
+  - navigating to "https://mccarthy.com/locations/san-jose", waiting until "domcontentloaded"
+
+2026-07-06 03:24:59,896 | INFO | Saved: Tico Construction, Inc.
+2026-07-06 03:25:15,697 | INFO | Saved: May Construction, Inc.

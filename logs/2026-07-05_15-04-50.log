@@ -1,0 +1,8 @@
+2026-07-05 15:04:54,300 | ERROR | Failed to open string
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "string", waiting until "domcontentloaded"
+
+2026-07-05 15:08:54,491 | INFO | Saved: Example Domain
+2026-07-05 15:10:17,407 | INFO | Saved: Example Domain
+2026-07-05 15:10:18,917 | INFO | Saved: Example Domain

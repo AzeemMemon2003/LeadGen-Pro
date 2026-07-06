@@ -1,39 +1,63 @@
 class EmailRanker:
 
-    SCORES = {
-        "contact": 100,
-        "sales": 95,
-        "hello": 90,
-        "info": 85,
-        "support": 70,
-        "marketing": 65,
+    PRIORITY = {
+
+        "info": 100,
+        "contact": 95,
+        "sales": 90,
+        "hello": 85,
+        "support": 80,
+        "office": 75,
+        "marketing": 70,
+
+        "owner": 60,
+        "founder": 60,
+        "ceo": 60,
+
         "admin": 40,
-        "office": 35,
+
+        "hr": 20,
         "careers": 20,
         "jobs": 20,
-        "legal": 10,
-        "privacy": 5,
-        "noreply": 0,
-        "no-reply": 0
+        "recruitment": 20
+
     }
 
     @classmethod
-    def score(cls, email):
+    def _score(cls, email):
 
         local = email.split("@")[0].lower()
 
-        for key, value in cls.SCORES.items():
+        return cls.PRIORITY.get(local, 50)
 
-            if key in local:
+    @classmethod
+    def sort(cls, emails):
 
-                return value
+        if not emails:
+            return []
 
-        return 50
+        return sorted(
+            set(emails),
+            key=cls._score,
+            reverse=True
+        )
+
+    @classmethod
+    def best(cls, emails):
+
+        ranked = cls.sort(emails)
+
+        if ranked:
+            return ranked[0]
+
+        return ""
 
     @classmethod
     def rank(cls, emails):
 
-        if not emails:
+        ranked = cls.sort(emails)
+
+        if not ranked:
 
             return {
                 "primary": "",
@@ -41,28 +65,12 @@ class EmailRanker:
                 "ignored": []
             }
 
-        ranked = sorted(
-            emails,
-            key=lambda x: cls.score(x),
-            reverse=True
-        )
-
-        ignored = []
-
-        cleaned = []
-
-        for email in ranked:
-
-            if cls.score(email) == 0:
-
-                ignored.append(email)
-
-            else:
-
-                cleaned.append(email)
-
         return {
-            "primary": cleaned[0] if cleaned else "",
-            "backup": cleaned[1:],
-            "ignored": ignored
+
+            "primary": ranked[0],
+
+            "backup": ranked[1:],
+
+            "ignored": []
+
         }

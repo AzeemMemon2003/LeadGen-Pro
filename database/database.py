@@ -10,7 +10,8 @@ class Database:
         Settings.create_directories()
 
         self.connection = sqlite3.connect(
-            Settings.DATABASE
+            Settings.DATABASE,
+            check_same_thread=False
         )
 
         self.connection.row_factory = sqlite3.Row

@@ -40,9 +40,45 @@ CREATE TABLE IF NOT EXISTS leads (
 
     website_opportunities TEXT,
 
+    email_verified TEXT,
+
+    email_confidence INTEGER,
+
+    email_provider TEXT,
+
+    email_role TEXT,
+
+    email_disposable TEXT,
+
     created_at TEXT,
 
     updated_at TEXT
+
+)
+
+"""
+
+SCAN_HISTORY_TABLE = """
+
+CREATE TABLE IF NOT EXISTS scan_history (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    started_at TEXT,
+
+    finished_at TEXT,
+
+    total_websites INTEGER,
+
+    successful INTEGER,
+
+    failed INTEGER,
+
+    duration_seconds INTEGER,
+
+    status TEXT,
+
+    created_at TEXT
 
 )
 

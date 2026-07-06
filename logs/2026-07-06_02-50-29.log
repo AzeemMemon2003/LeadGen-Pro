@@ -1,0 +1,34 @@
+2026-07-06 02:50:36,285 | ERROR | Failed to open https://cal-roof.com
+Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://cal-roof.com/
+Call log:
+  - navigating to "https://cal-roof.com/", waiting until "domcontentloaded"
+
+2026-07-06 02:50:40,399 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:50:52,696 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:01,674 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:11,791 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:19,997 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:32,248 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:34,061 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:41,461 | ERROR | Failed to open https://roofingcali.com
+Page.goto: net::ERR_CERT_DATE_INVALID at https://roofingcali.com/
+Call log:
+  - navigating to "https://roofingcali.com/", waiting until "domcontentloaded"
+
+2026-07-06 02:51:42,359 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:51:48,401 | ERROR | Failed to open https://alpharoofing.com
+Page.goto: net::ERR_NAME_NOT_RESOLVED at https://alpharoofing.com/
+Call log:
+  - navigating to "https://alpharoofing.com/", waiting until "domcontentloaded"
+
+2026-07-06 02:52:00,466 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:53:16,173 | ERROR | Failed to open https://chandlersroofing.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://chandlersroofing.com/
+Call log:
+  - navigating to "https://chandlersroofing.com/", waiting until "domcontentloaded"
+
+2026-07-06 02:53:28,722 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:53:35,164 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:53:41,850 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:53:56,165 | ERROR | type object 'EmailRanker' has no attribute 'rank'
+2026-07-06 02:54:00,858 | ERROR | type object 'EmailRanker' has no attribute 'rank'

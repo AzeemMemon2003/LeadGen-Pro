@@ -1,0 +1,30 @@
+2026-07-06 03:14:19,608 | ERROR | near ")": syntax error
+2026-07-06 03:14:26,212 | ERROR | near ")": syntax error
+2026-07-06 03:14:34,994 | ERROR | near ")": syntax error
+2026-07-06 03:15:50,009 | ERROR | Failed to open https://princedentalcare.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://princedentalcare.com/
+Call log:
+  - navigating to "https://princedentalcare.com/", waiting until "domcontentloaded"
+
+2026-07-06 03:15:58,016 | ERROR | near ")": syntax error
+2026-07-06 03:17:13,763 | ERROR | Failed to open https://luckydentalcenter.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://luckydentalcenter.com/
+Call log:
+  - navigating to "https://luckydentalcenter.com/", waiting until "domcontentloaded"
+
+2026-07-06 03:17:24,373 | ERROR | near ")": syntax error
+2026-07-06 03:17:37,205 | ERROR | near ")": syntax error
+2026-07-06 03:17:44,680 | ERROR | near ")": syntax error
+2026-07-06 03:17:50,116 | ERROR | near ")": syntax error
+2026-07-06 03:18:01,109 | ERROR | near ")": syntax error
+2026-07-06 03:19:16,493 | ERROR | Failed to open https://sanjosesmilearts.com
+Page.goto: net::ERR_CONNECTION_TIMED_OUT at https://sanjosesmilearts.com/
+Call log:
+  - navigating to "https://sanjosesmilearts.com/", waiting until "domcontentloaded"
+
+2026-07-06 03:19:25,183 | ERROR | near ")": syntax error
+2026-07-06 03:19:36,966 | ERROR | near ")": syntax error
+2026-07-06 03:19:58,220 | ERROR | near ")": syntax error
+2026-07-06 03:20:00,522 | ERROR | near ")": syntax error
+2026-07-06 03:20:09,537 | ERROR | near ")": syntax error
+2026-07-06 03:20:14,137 | ERROR | near ")": syntax error

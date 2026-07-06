@@ -19,3 +19,20 @@ export const getLeads = async () => {
 
   return res.data;
 };
+export async function updateLeadStatus(id, status) {
+
+  const response = await fetch(
+    `http://127.0.0.1:8000/api/leads/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        status,
+      }),
+    }
+  );
+
+  return await response.json();
+}

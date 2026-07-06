@@ -1,0 +1,25 @@
+2026-07-06 03:27:48,811 | ERROR | Failed to open Roofing Companies San Jose
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "Roofing Companies San Jose", waiting until "domcontentloaded"
+
+2026-07-06 03:27:49,293 | ERROR | Failed to open Roofing Companies San Jose
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "Roofing Companies San Jose", waiting until "domcontentloaded"
+
+2026-07-06 03:27:52,763 | ERROR | Failed to open Roofing Companies San Jose
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "Roofing Companies San Jose", waiting until "domcontentloaded"
+
+2026-07-06 03:27:59,518 | ERROR | Failed to open Roofing Companies San Jose
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "Roofing Companies San Jose", waiting until "domcontentloaded"
+
+2026-07-06 03:28:19,888 | ERROR | Failed to open Roofing Companies San Jose
+Page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+Call log:
+  - navigating to "Roofing Companies San Jose", waiting until "domcontentloaded"
+

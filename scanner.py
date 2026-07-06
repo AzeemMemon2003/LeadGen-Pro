@@ -17,6 +17,7 @@ from proposal.manager import ProposalManager
 from integration.manager import IntegrationManager
 
 from utils.logger import Logger
+from utils.progress import ScanProgress
 
 
 class Scanner:
@@ -33,6 +34,11 @@ class Scanner:
 
             return
 
+        self.run_websites(websites)
+
+    @staticmethod
+    def run_websites(websites):
+
         browser = Browser()
         browser.start()
 
@@ -43,6 +49,8 @@ class Scanner:
         exporter = ExportManager()
 
         total = len(websites)
+
+        ScanProgress.reset(total)
 
         print(f"\n🚀 Starting scan of {total} websites...\n")
 
@@ -59,15 +67,7 @@ class Scanner:
                     website
                 )
 
-                # -----------------------------
-                # Database
-                # -----------------------------
-
                 repo.save(result)
-
-                # -----------------------------
-                # Proposal PDF
-                # -----------------------------
 
                 proposal = ProposalManager.generate(
                     result
@@ -77,16 +77,9 @@ class Scanner:
                     f"\n📄 Proposal Generated : {proposal}"
                 )
 
-                # -----------------------------
-                # n8n Payload / Webhook
-                # -----------------------------
-
                 payload, response = IntegrationManager.send(
-
                     result,
-
                     proposal
-
                 )
 
                 if response["success"]:
@@ -97,20 +90,17 @@ class Scanner:
 
                     print(f"⚠ {response['message']}")
 
-                # -----------------------------
-                # Excel
-                # -----------------------------
-
                 exporter.add(result)
-
-                # -----------------------------
-                # Console Report
-                # -----------------------------
 
                 ReportService.print(result)
 
                 logger.info(
                     f"Saved: {result['company']}"
+                )
+
+                ScanProgress.update(
+                    website=website,
+                    success=True
                 )
 
             except Exception as e:
@@ -121,17 +111,14 @@ class Scanner:
 
                 print(e)
 
+                ScanProgress.update(
+                    website=website,
+                    success=False
+                )
+
         browser.stop()
 
-        # -----------------------------
-        # Save Excel
-        # -----------------------------
-
         exporter.save()
-
-        # -----------------------------
-        # Campaign Builder
-        # -----------------------------
 
         leads = repo.all()
 
@@ -148,6 +135,8 @@ class Scanner:
         builder.stats(
             campaigns
         )
+
+        ScanProgress.finish()
 
         print("\n" + "=" * 70)
         print("✅ Scan Complete")
